@@ -2,8 +2,8 @@ services:
   app:
     build: .
     depends_on:
-      postgres:
-        condition: service_healthy
+      # postgres:
+      #   condition: service_healthy
       redis:
         condition: service_started
     # image: docuseal/docuseal:latest
@@ -12,23 +12,24 @@ services:
     volumes:
       - ./docuseal:/data/docuseal
     environment:
-      - FORCE_SSL=${HOST}
-      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/docuseal
+      - FORCE_SSL=false
+      - RAILS_ENV=production
       - REDIS_URL=redis://redis:6379
-
-  postgres:
-    image: postgres:18
-    volumes:
-      - './pg_data:/var/lib/postgresql/18/docker'
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: docuseal
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
+      - DATABASE_URL=postgresql://postgres:pg123@host.docker.internal:5432/docuseal
+      - ENCRYPTION_SECRET=${ENCRYPTION_SECRET}
+  # postgres:
+  #   image: postgres:18
+  #   volumes:
+  #     - './pg_data:/var/lib/postgresql/18/docker'
+  #   environment:
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: postgres
+  #     POSTGRES_DB: docuseal
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -U postgres"]
+  #     interval: 5s
+  #     timeout: 5s
+  #     retries: 5
 
   redis:
     image: redis:7-alpine
