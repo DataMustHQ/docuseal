@@ -1,0 +1,45 @@
+name: Trigger auto deployment for documust-app-dev
+
+# When this action will be executed
+on:
+  # Automatically trigger it when detected changes in repo
+  push:
+    branches: 
+      [ master ]
+    paths:
+    - '**'
+    - '.github/workflows/documust-app-dev-AutoDeployTrigger-ca5891b9-c962-4c18-a065-0898b079828e.yml'
+
+  # Allow manual trigger 
+  workflow_dispatch:
+      
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout to the branch
+        uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.DOCUMUSTAPPDEV_AZURE_CREDENTIALS }}
+
+      - name: Build and push container image to registry
+        uses: azure/container-apps-deploy-action@v2
+        with:
+          appSourcePath: ${{ github.workspace }}
+          _dockerfilePathKey_: _dockerfilePath_
+          _targetLabelKey_: _targetLabel_
+          registryUrl: damuregistrydev.azurecr.io
+          registryUsername: ${{ secrets.DOCUMUSTAPPDEV_REGISTRY_USERNAME }}
+          registryPassword: ${{ secrets.DOCUMUSTAPPDEV_REGISTRY_PASSWORD }}
+          containerAppName: documust-app-dev
+          resourceGroup: damu-dev-rg
+          imageToBuild: damuregistrydev.azurecr.io/documust-app-dev:${{ github.sha }}
+          
+            
+
+     
+
