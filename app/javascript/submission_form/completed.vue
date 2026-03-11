@@ -66,7 +66,7 @@
       <a
         v-if="isDemo"
         target="_blank"
-        href="https://github.com/docusealco/docuseal"
+        href="https://github.com/datamust"
         class="white-button flex items-center space-x-1 w-full"
       >
         <IconBrandGithub />
@@ -76,7 +76,7 @@
       </a>
       <a
         v-if="isDemo"
-        href="https://docuseal.com/sign_up"
+        href="https://datamust.com"
         class="white-button flex items-center space-x-1 w-full"
       >
         <IconLogin />
@@ -91,10 +91,10 @@
     >
       {{ t('powered_by') }}
       <a
-        href="https://www.docuseal.com/start"
+        href="https://www.datamust.com"
         target="_blank"
         class="underline"
-      >DocuSeal</a> - {{ t('open_source_documents_software') }}
+      >DocuMust</a> - {{ t('open_source_documents_software') }}
     </div>
   </div>
 </template>
