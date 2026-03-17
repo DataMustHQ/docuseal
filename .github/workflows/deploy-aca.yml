@@ -13,6 +13,7 @@ jobs:
   deploy-prod:
     if: github.ref_name == 'master'
     runs-on: ubuntu-latest
+    environment: prod
     env:
       AZURE_ACR_NAME: ${{ vars.PROD_AZURE_ACR_NAME }}
       AZURE_RESOURCE_GROUP: ${{ vars.PROD_AZURE_RESOURCE_GROUP }}
@@ -40,6 +41,7 @@ jobs:
   deploy-dev:
     if: github.ref_name == 'develop'
     runs-on: ubuntu-latest
+    environment: dev
     env:
       AZURE_ACR_NAME: ${{ vars.DEV_AZURE_ACR_NAME }}
       AZURE_RESOURCE_GROUP: ${{ vars.DEV_AZURE_RESOURCE_GROUP }}
