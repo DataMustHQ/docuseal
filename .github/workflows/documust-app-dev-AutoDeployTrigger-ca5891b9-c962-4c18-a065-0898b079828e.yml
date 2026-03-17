@@ -5,7 +5,7 @@ on:
   # Automatically trigger it when detected changes in repo
   push:
     branches: 
-      [ master ]
+      [ main ]
     paths:
     - '**'
     - '.github/workflows/documust-app-dev-AutoDeployTrigger-ca5891b9-c962-4c18-a065-0898b079828e.yml'
