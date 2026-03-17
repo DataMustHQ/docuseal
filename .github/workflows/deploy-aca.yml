@@ -31,6 +31,7 @@ jobs:
       - name: Deploy to ACA (prod)
         uses: azure/container-apps-deploy-action@v1
         with:
+          appSourcePath: ${{ github.workspace }}
           acrName: ${{ env.AZURE_ACR_NAME }}
           resourceGroup: ${{ env.AZURE_RESOURCE_GROUP }}
           containerAppName: ${{ env.AZURE_CONTAINER_APP_NAME }}
@@ -59,6 +60,7 @@ jobs:
       - name: Deploy to ACA (dev)
         uses: azure/container-apps-deploy-action@v1
         with:
+          appSourcePath: ${{ github.workspace }}
           acrName: ${{ env.AZURE_ACR_NAME }}
           resourceGroup: ${{ env.AZURE_RESOURCE_GROUP }}
           containerAppName: ${{ env.AZURE_CONTAINER_APP_NAME }}
