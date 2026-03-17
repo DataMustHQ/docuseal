@@ -2,7 +2,7 @@ name: Deploy to Azure Container Apps
 
 on:
   push:
-    branches: [ "main" ]  # change if your deploy branch is different
+    branches: [ "master", "develop" ]
   workflow_dispatch:
 
 permissions:
@@ -10,26 +10,56 @@ permissions:
   contents: read
 
 jobs:
-  deploy:
+  deploy-prod:
+    if: github.ref_name == 'master'
     runs-on: ubuntu-latest
-    # optional: only deploy if CI passed if you wire workflow_run instead
+    env:
+      AZURE_ACR_NAME: ${{ vars.PROD_AZURE_ACR_NAME }}
+      AZURE_RESOURCE_GROUP: ${{ vars.PROD_AZURE_RESOURCE_GROUP }}
+      AZURE_CONTAINER_APP_NAME: ${{ vars.PROD_AZURE_CONTAINER_APP_NAME }}
+      AZURE_CONTAINER_APP_ENV_NAME: ${{ vars.PROD_AZURE_CONTAINER_APP_ENV_NAME }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Azure login
+      - name: Azure login (prod)
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          creds: ${{ secrets.PROD_AZURE_CREDENTIALS }}
 
-      - name: Deploy to ACA
+      - name: Deploy to ACA (prod)
         uses: azure/container-apps-deploy-action@v1
         with:
-          acrName: ${{ secrets.AZURE_ACR_NAME }}
-          resourceGroup: ${{ secrets.AZURE_RESOURCE_GROUP }}
-          containerAppName: ${{ secrets.AZURE_CONTAINER_APP_NAME }}
-          containerAppEnvironment: ${{ secrets.AZURE_CONTAINER_APP_ENV_NAME }}
+          acrName: ${{ env.AZURE_ACR_NAME }}
+          resourceGroup: ${{ env.AZURE_RESOURCE_GROUP }}
+          containerAppName: ${{ env.AZURE_CONTAINER_APP_NAME }}
+          containerAppEnvironment: ${{ env.AZURE_CONTAINER_APP_ENV_NAME }}
           dockerfilePath: ./Dockerfile
-          imageToBuild: ${{ secrets.AZURE_ACR_NAME }}.azurecr.io/docuseal:${{ github.sha }}
+          imageToBuild: ${{ env.AZURE_ACR_NAME }}.azurecr.io/docuseal:${{ github.sha }}
+
+  deploy-dev:
+    if: github.ref_name == 'develop'
+    runs-on: ubuntu-latest
+    env:
+      AZURE_ACR_NAME: ${{ vars.DEV_AZURE_ACR_NAME }}
+      AZURE_RESOURCE_GROUP: ${{ vars.DEV_AZURE_RESOURCE_GROUP }}
+      AZURE_CONTAINER_APP_NAME: ${{ vars.DEV_AZURE_CONTAINER_APP_NAME }}
+      AZURE_CONTAINER_APP_ENV_NAME: ${{ vars.DEV_AZURE_CONTAINER_APP_ENV_NAME }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Azure login (dev)
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.DEV_AZURE_CREDENTIALS }}
+
+      - name: Deploy to ACA (dev)
+        uses: azure/container-apps-deploy-action@v1
+        with:
+          acrName: ${{ env.AZURE_ACR_NAME }}
+          resourceGroup: ${{ env.AZURE_RESOURCE_GROUP }}
+          containerAppName: ${{ env.AZURE_CONTAINER_APP_NAME }}
+          containerAppEnvironment: ${{ env.AZURE_CONTAINER_APP_ENV_NAME }}
+          dockerfilePath: ./Dockerfile
+          imageToBuild: ${{ env.AZURE_ACR_NAME }}.azurecr.io/docuseal:${{ github.sha }}
