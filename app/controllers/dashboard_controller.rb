@@ -39,7 +39,7 @@ class DashboardController < ApplicationController
   def maybe_render_landing
     return if signed_in?
 
-    # render 'pages/landing'
-    redirect_to '/sign_in'
+    render 'pages/landing'
+    # redirect_to '/sign_in'
   end
 end
