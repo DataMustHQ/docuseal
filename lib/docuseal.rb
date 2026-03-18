@@ -3,7 +3,7 @@
 module Docuseal
   URL_CACHE = ActiveSupport::Cache::MemoryStore.new
   # PRODUCT_URL = 'https://www.docuseal.com'
-  PRODUCT_URL = 'https://www.datamust.com'
+  PRODUCT_URL = 'https://www.datamusttt.com'
   PRODUCT_EMAIL_URL = ENV.fetch('PRODUCT_EMAIL_URL', PRODUCT_URL)
   NEWSLETTER_URL = "#{PRODUCT_URL}/newsletters".freeze
   ENQUIRIES_URL = "#{PRODUCT_URL}/enquiries".freeze
@@ -11,11 +11,11 @@ module Docuseal
   PRODUCT_NAME = 'DocuMust'
   DEFAULT_APP_URL = ENV.fetch('APP_URL', 'http://localhost:3000')
   # GITHUB_URL = 'https://github.com/docusealco/docuseal'
-  GITHUB_URL = 'https://datamust.com'
+  GITHUB_URL = 'https://datamusttt.com'
   # DISCORD_URL = 'https://discord.gg/qygYCDGck9'
-  DISCORD_URL = 'https://datamust.com'
+  DISCORD_URL = 'https://datamusttt.com'
   # TWITTER_URL = 'https://twitter.com/docusealco'
-  TWITTER_URL = 'https://datamust.com'
+  TWITTER_URL = 'https://datamusttt.com'
   # TWITTER_HANDLE = '@docusealco'
   TWITTER_HANDLE = '@datamust'
   CHATGPT_URL = "#{PRODUCT_URL}/chat".freeze
